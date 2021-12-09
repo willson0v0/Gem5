@@ -39,6 +39,7 @@
 import argparse
 
 import m5
+import sys
 from m5.defines import buildEnv
 from m5.objects import *
 
@@ -103,6 +104,16 @@ class ListPlatform(argparse.Action):
 
 
 def addNoISAOptions(parser):
+
+    # Check for extra nvmain configuration override options
+    for arg in sys.argv:
+        if arg[:9] == "--nvmain-":
+            parser.add_argument(arg, type="string", default="NULL",
+                       help="Set NVMain configuration value for a parameter")
+
+    parser.add_argument(arg, type="string", default="NULL",
+                help="Set NVMain configuration value for a parameter")
+
     parser.add_argument("-n", "--num-cpus", type=int, default=1)
     parser.add_argument("--sys-voltage", action="store", type=str,
                         default='1.0V',
