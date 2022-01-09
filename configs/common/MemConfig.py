@@ -197,7 +197,13 @@ def config_mem(options, system):
         range_iter += 1
 
         for i in range(nbr_mem_ctrls):
-            if opt_mem_type and (not opt_nvm_type or range_iter % 2 != 0):
+            if opt_mem_type == "NVMainMemory":
+                nvmain_intf = create_mem_intf(intf, r, i, intlv_bits,
+                    intlv_size, opt_xor_low_bit)
+                if opt_mem_ranks:
+                    dram_intf.ranks_per_channel = opt_mem_ranks
+                mem_ctrls.append(nvmain_intf)
+            elif opt_mem_type and (not opt_nvm_type or range_iter % 2 != 0):
                 # Create the DRAM interface
                 dram_intf = create_mem_intf(intf, r, i,
                     intlv_bits, intlv_size, opt_xor_low_bit)
